@@ -1,4 +1,4 @@
-package com.github.chore.repository.entity.user_role;
+package com.github.chore.repository.entity.role;
 
 import com.github.chore.repository.entity.user.User;
 import jakarta.persistence.*;

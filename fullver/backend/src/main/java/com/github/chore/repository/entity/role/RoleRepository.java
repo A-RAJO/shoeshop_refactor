@@ -1,4 +1,4 @@
-package com.github.chore.repository.entity.user_role;
+package com.github.chore.repository.entity.role;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

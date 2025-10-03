@@ -1,4 +1,4 @@
-package com.github.chore.repository.entity.user_role;
+package com.github.chore.repository.entity.role;
 
 public enum RoleType {
     BUYER,
