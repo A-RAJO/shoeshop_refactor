@@ -1,11 +1,10 @@
 package com.github.chore.repository.entity.user;
 
-import com.github.chore.repository.entity.user_role.Role;
+import com.github.chore.repository.entity.role.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
