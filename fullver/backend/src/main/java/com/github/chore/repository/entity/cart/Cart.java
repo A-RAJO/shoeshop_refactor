@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @Table(name = "cart")
 @Entity
-public class Cart {
+public class Cart { // 상품옵션 선택 내역을 임시저장
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id", nullable = false) //auto-incresment로 설정되어 있어 길이제약 없음
