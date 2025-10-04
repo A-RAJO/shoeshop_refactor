@@ -57,6 +57,7 @@ public class Inventory {
     @Column(name = "last_sold_at")
     private LocalDateTime lastSoldAt;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "redis_sync_status")
     private RedisSyncStatus redisSyncStatus;
 
