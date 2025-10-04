@@ -12,7 +12,7 @@ spring:
 
 datasource:
   mysql:
-    url: jdbc:mysql://localhost:3306/shoes_mall_refactor
+    url: jdbc:mysql://localhost:3306/shoe_mall_refactor
     username: ${USERNAME}
     password: ${PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
