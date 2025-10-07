@@ -8,9 +8,6 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Table(name = "image")
 @Entity
 public class Image {
@@ -20,11 +17,8 @@ public class Image {
     private Integer imageId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "shoe_option", nullable = false)
+    @JoinColumn(name = "shoe_option_id", nullable = false)
     private ShoeOption shoeOption;
-
-    @Column(name = "file_name",nullable = false, length = 100)
-    private String file_name;
 
     @Column(name = "image_link",length = 500)
     private String imageLink;
@@ -32,11 +26,14 @@ public class Image {
     @Column(name="image_type")
     private ImageType imageType;
 
+    @Column(name = "file_name",nullable = false, length = 100)
+    private String file_name;
+
     @Builder.Default // 필드에 기본값이 필요하면서 @Builder를 쓰고 싶을 때 사용. 보통 빌더는 초기값 안 넣으면 null 처리함
     @Column(name="is_primary", nullable = false)
     private Boolean isPrimary = false;
 
-    @Column(name = "created_at", nullable = false, updatable = false) // 자동 입력 기능 필요 : @LastModifiedDate와 Auditing 설정
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
