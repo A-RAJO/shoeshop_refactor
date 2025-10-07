@@ -67,7 +67,7 @@ public class Inventory {
     @Column(name = "redis_version")
     private Integer redisVersion;
 
-    @Column(name = "created_at", nullable = false, updatable = false) // 자동 입력 기능 필요 : @LastModifiedDate와 Auditing 설정
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at",nullable = false)
