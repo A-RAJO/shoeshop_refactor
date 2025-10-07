@@ -38,9 +38,8 @@ public class ShoeOption {
     @Column(name="sort_order")
     private Integer sortOrder = 0;
 
-    @Builder.Default
     @Column(name = "additional_price")
-    private BigDecimal additionalPrice = BigDecimal.valueOf(0);
+    private BigDecimal additionalPrice;
 
     @Column(name = "sku", nullable = false)
     private String sku;
@@ -62,33 +61,23 @@ public class ShoeOption {
     private LocalDateTime updatedAt;
 
     @PrePersist
-    protected void onCreate() {
+    protected void onCreate() { // SKU는 예외로 JPA에서 관리
         if (shoe == null || shoe.getShoeId() == null) {
             throw new IllegalStateException("ShoeOption 생성 시 반드시 Shoe가 존재해야 합니다.");
         }
-
-        LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
-
-        String datePart = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("SH");
-        sb.append(shoe.getShoeId());
-        sb.append("-");
-        sb.append(color.toUpperCase().replaceAll("\\s+", ""));
-        sb.append("-");
-        sb.append(size);
-        sb.append("-");
-        sb.append(datePart);
-
-        this.sku = sb.toString();
+        sku = this.generateSku();
     }
 
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+    private String generateSku() {
+        String datePart =createdAt
+                .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+
+        return String.format("SH%d-%s-%s-%s",
+                shoe.getShoeId(),
+                color.toUpperCase().replaceAll("\\s+", ""),
+                size,
+                datePart
+        );
     }
 
 
