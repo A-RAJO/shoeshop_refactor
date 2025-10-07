@@ -13,6 +13,8 @@ spring:
     logging:
       config: classpath:logback-spring-local.xml
 
+  jackson:
+    property-naming-strategy: SNAKE_CASE #카멜케이스에서 스네이크케이스로 자동변환
 
 #
 #  servlet:
