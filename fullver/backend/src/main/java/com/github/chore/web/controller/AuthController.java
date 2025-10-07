@@ -1,80 +1,75 @@
-//package com.github.chore.web.controller;
-//
-//import com.github.chore.config.auth.dto.TokenDTO;
-//import com.github.chore.config.auth.jwt.JwtTokenProviderService;
-//import com.github.chore.repository.entity.user.User;
-//import com.github.chore.service.AuthService;
-//import com.github.chore.service.UserRoleService;
-//import com.github.chore.service.UserService;
-//import com.github.chore.web.dto.*;
-//import jakarta.validation.Valid;
-//import lombok.RequiredArgsConstructor;
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.util.StringUtils;
-//import org.springframework.validation.BindingResult;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.util.Objects;
-//import java.util.stream.Collectors;
-//
-//@RequiredArgsConstructor
-//@RestController
-//@RequestMapping(value = "/auth")
-//@Slf4j
-//public class AuthController {
-//    private final AuthService authService;
-//    private final UserService userService;
-//
-//    private final UserRoleService userRoleService;
-//
-//    private final JwtTokenProviderService jwtTokenProviderService;
-//
-//    /**
-//     * 회원 가입 처리
-//     * @param signUpDTO 회원가입을 위한 데이터 (유효성 검사됨)
-//     * @return 성공 또는 실패 메시지와 상태 코드를 포함한 ResponseEntity
-//    {
-//    "user_name":"test1",
-//    "user_email":"test1@gmail.com",
-//    "user_password":"1111",
-//    "user_phone":"010-1111-2222",
-//    "user_profile":"11",
-//    "roles" :["BUYER", "SELLER"]
-//    }
-//     */
-//    @PostMapping("/signup")
-//    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpDTO signUpDTO, BindingResult bindingResult) {
-//        log.info("회원 가입 처리 요청 수신");
-//        try {
-//            // 유효성 검사 결과 처리
-//            if (bindingResult.hasErrors()) {
-//                String errorMessage = Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage();
-//                return ResponseEntity.badRequest().body(ResponseDTO.builder().status(400).message(errorMessage).build());
-//            }
-//
+package com.github.chore.web.controller;
+
+import com.github.chore.config.auth.dto.TokenDTO;
+import com.github.chore.repository.entity.user.User;
+import com.github.chore.web.dto.ResponseDTO;
+import com.github.chore.web.dto.ResponseHelper;
+import com.github.chore.web.dto.SignUpDTO;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+@RequiredArgsConstructor
+@RestController
+@RequestMapping(value = "/auth")
+@Slf4j
+public class AuthController {
+
+    /**
+     * 회원 가입 처리
+     * @param signUpDTO 회원가입을 위한 데이터 (유효성 검사됨)
+     * @return 성공 또는 실패 메시지와 상태 코드를 포함한 ResponseEntity
+    {
+    "user_name":"test1",
+    "user_email":"test1@gmail.com",
+    "user_password":"1111",
+    "user_phone":"010-1111-2222",
+    "user_profile":"11",
+    "roles" :["BUYER", "SELLER"]
+    }
+     */
+    // @Valid : 객체의 필드가 특정 제약 조건을 만족하는지 자동으로 검증
+    // @Valid가 적용되면, DTO의 필드 검증 후 통과하지 못하면
+    // MethodArgumentNotValidException 발생
+    //    BindingResult는 Spring MVC에서 @Valid 또는 @ModelAttribute로 검증한 결과를 담는 객체입니다. = 유효성 검사 결과 저장
+    //    즉, DTO 검증 결과를 프로그래머가 직접 확인하고 처리할 수 있게 해주는 역할을 합니다.
+    @PostMapping("/sign-up")
+    public ResponseEntity<?> registerUser(@Validated @RequestBody SignUpDTO signUpDTO, BindingResult bindingResult) {
+
+        final ResponseHelper responseHelper = null;
+
+        log.info("회원 가입 처리 요청 수신");
+        try {
+            // 유효성 검사 결과 처리
+            if (bindingResult.hasErrors()) {
+                String errorMessage = Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage();
+                return responseHelper.fail(400,errorMessage, bindingResult);
+            }
+
 //            // 회원가입 DTO를 User 엔티티로 변환
 //            User user = SignUpDTO.toCreateUser(signUpDTO, userRoleService);
 //
 //            // 회원가입 처리
 //            User registeredUser = userService.registerUser(user);
-//
-//            // 성공 응답 생성
-//            ResponseDTO responseDTO = ResponseDTO.builder()
-//                    .status(200)
-//                    .message("회원가입이 성공적으로 완료되었습니다.")
-//                    .build();
-//            return ResponseEntity.ok().body(responseDTO);
-//        } catch (Exception e) {
-//            log.error("회원가입 처리 중 오류 발생: ", e);
-//            ResponseDTO responseDTO = ResponseDTO.builder()
-//                    .status(400)
-//                    .message(e.getMessage())
-//                    .build();
-//            return ResponseEntity.badRequest().body(responseDTO);
-//        }
-//    }
-//
+
+            //성공응답
+            return responseHelper.ok(signUpDTO,"회원가입에 성공했습니다.");
+
+        } catch (Exception e) {
+            log.error("회원가입 처리 중 오류 발생: ", e);
+
+            return responseHelper.fail(400,"회원가입에 실패했습니다.",e);
+
+        }
+    }
+
 //    /**
 //     * 회원가입시 중복확인
 //     * @param signUpDTO
@@ -112,23 +107,6 @@
 //
 //    }
 //
-////    @PostMapping(value = "/login")
-////    public ResponseEntity<Map<String, String>> login(@RequestBody LoginDTO loginRequestDto) {
-////        try {
-////            Map<String, String> tokens = authService.login(loginRequestDto);
-////
-////            return ResponseEntity
-////                    .status(HttpStatus.OK)
-////                    .header("Authorization", "Bearer " + tokens.get("accessToken"))
-////                    .header("Refresh-Token", tokens.get("refreshToken"))
-////                    .body(Collections.singletonMap("message", "로그인에 성공했습니다."));
-////
-////        } catch (Exception e) {
-////            return ResponseEntity
-////                    .status(HttpStatus.UNAUTHORIZED)
-////                    .body(Collections.singletonMap("message", "로그인에 실패했습니다."));
-////        }
-////    }
 //
 //    /** auth/login
 //     * 로그인 처리
@@ -234,4 +212,4 @@
 //            return ResponseEntity.badRequest().body(ResponseDTO.builder().status(400).message("갱신 토큰이 유효하지 않습니다.").build());
 //        }
 //    }
-//}
+}
