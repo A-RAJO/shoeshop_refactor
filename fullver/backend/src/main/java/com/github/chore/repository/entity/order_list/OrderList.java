@@ -50,27 +50,27 @@ public class OrderList {
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    @Column(name = "order_status", nullable = false)
+    @Column(name = "order_status")
     private OrderStatus orderStatus = OrderStatus.PENDING;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_status", nullable = false)
+    @Column(name = "payment_status")
     private PaymentStatus paymentStatus = PaymentStatus.PENDING;
 
-    @Column(name = "order_date", nullable = false)
+    @Column(name = "order_date")
     private LocalDateTime orderDate;
 
-    @Column(name = "shipped_at", nullable = false)
+    @Column(name = "shipped_at")
     private LocalDateTime shippedAt;
 
-    @Column(name = "delivered_at", nullable = false)
+    @Column(name = "delivered_at")
     private LocalDateTime deliveredAt;
 
-    @Column(name = "version", nullable = false)
+    @Column(name = "version")
     private Integer version;
 
-    @Column(name = "created_at", nullable = false, updatable = false) // 자동 입력 기능 필요 : @LastModifiedDate와 Auditing 설정
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at",nullable = false)
