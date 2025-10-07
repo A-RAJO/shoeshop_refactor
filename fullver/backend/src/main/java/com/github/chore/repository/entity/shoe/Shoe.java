@@ -1,7 +1,7 @@
 package com.github.chore.repository.entity.shoe;
 
 import com.github.chore.repository.entity.category.Category;
-import com.github.chore.repository.entity.shoe_option.ShoeOption;
+import com.github.chore.repository.entity.shoe_detail.ShoeDetail;
 import com.github.chore.repository.entity.seller.Seller;
 import com.github.chore.repository.entity.user.User;
 import jakarta.persistence.*;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "shoe")
 @Entity
 public class Shoe {
@@ -22,8 +22,14 @@ public class Shoe {
     private Integer shoeId;
 
     @OneToOne
-    @JoinColumn(name = "shoe_option_id", nullable = false)
-    private ShoeOption shoeOption;
+    @JoinColumn(name = "shoe_detail_id", nullable = false) // shoe_detail과 일대일, shoe_option과 일대다 관계
+    private ShoeDetail shoeDetail;
+
+    @Column(name = "price", nullable = false)
+    private BigDecimal Price;
+
+    @Column(name = "shoe_name",nullable = false) // 255자는 비활성화됨 왜?
+    private String shoeName;
 
     @ManyToOne
     @JoinColumn(name="seller_id",nullable = false)
@@ -33,15 +39,8 @@ public class Shoe {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @Column(name = "shoe_name",nullable = false) // 255자는 비활성화됨 왜?
-    private String shoeName;
-
-    @Column(name = "price", nullable = false)
-    private BigDecimal Price;
-
-    @Builder.Default
     @Column(name = "total_sales")
-    private BigDecimal totalSales = BigDecimal.valueOf(0);
+    private BigDecimal totalSales;
 
     @Builder.Default
     @Column(name = "discount_price")
@@ -54,23 +53,19 @@ public class Shoe {
     @Enumerated(EnumType.STRING)
     @Builder.Default
     @Column(name = "discount_priority")
-    private DiscountPriority discountPriority;
+    private DiscountPriority discountPriorit = DiscountPriority.NONE;
 
-    @Builder.Default
     @Column(name = "view_count")
-    private Integer viewCount = 0;
+    private Integer viewCount;
 
-    @Builder.Default
     @Column(name= "like_count")
-    private Integer likeCount = 0;
+    private Integer likeCount;
 
-    @Builder.Default
     @Column(name="review_count")
-    private Integer reviewCount = 0;
+    private Integer reviewCount;
 
-    @Builder.Default
     @Column(name = "rating_avg")
-    private BigDecimal ratingAvg = BigDecimal.valueOf(0);
+    private BigDecimal ratingAvg;
 
     @Builder.Default
     @Column(name = "estimated_delivery_days")
@@ -78,26 +73,27 @@ public class Shoe {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "shoe_status",nullable = false)
-    private ShoeStatus shoeStatus;
+    private ShoeStatus shoeStatus = ShoeStatus.DRAFT;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "approval_status",nullable = false)
-    private ApprovalStatus approvalStatus;
+    private ApprovalStatus approvalStatus = ApprovalStatus.PENDING;
 
+    @Builder.Default
     @Column(name = "rejection_reason", length = 200)
-    private String rejectionReason;
+    private String rejectionReason = "관리자에게 문의하시길 바랍니다.";
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false) // 승인하는 관리자 아이디에 해당되는 것
+    @JoinColumn(name = "user_id") // 승인하는 관리자 아이디에 해당되는 것
     private User ApprovedBy;
 
     @Builder.Default
-    @Column(name = "approved_at",nullable = false) // 승인날짜
+    @Column(name = "approved_at") // 승인날짜
     private LocalDateTime approvedAt;
 
     @Builder.Default
     @Column(name = "is_active",nullable = false) // 활성화여부
-    private Boolean isActive = false;
+    private Boolean isActive = true;
 
     @Builder.Default
     @Column(name = "is_featured") // 추천상품,일반상품
@@ -107,12 +103,10 @@ public class Shoe {
     @Column(name = "is_new_arrival")
     private Boolean isNewArrival=false;
 
-    @Builder.Default
-    @Column(name="display_start_date",nullable = false) // 생성 및 업데이트 날짜로 자동생성, 오늘 이후 날짜만 가능
+    @Column(name = "display_start_date", nullable = false)
     private LocalDateTime displayStartDate;
 
-    @Builder.Default
-    @Column(name="display_end_date",nullable = false) // 시작일 + 30일, 시작일 이후 날짜만 선택 가능
+    @Column(name = "display_end_date", nullable = false)
     private LocalDateTime displayEndDate;
 
     @Version // 낙관적 락, 동시성 문제 방지용(동시 수정 시에 충돌 방지용)
@@ -128,21 +122,41 @@ public class Shoe {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
+
+    // 전시기간 디폴트값 생성(기본 현재시간~30일)
     @PrePersist
     protected void onCreate() {
+        if (displayStartDate == null) {
+            displayStartDate = LocalDateTime.now();
+        }
+
+        if (displayEndDate == null) {
+            displayEndDate = displayStartDate.plusDays(30);
+        }
+
+        // 검증 로직
+        validateDisplayDates();
+    }
+
+
+    //DB(제약조건)와 app단(validateDisplayDates) 이중 검증
+    private void validateDisplayDates() {
         LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
+
+        if (displayStartDate.isBefore(now)) {
+            throw new IllegalArgumentException("시작일은 현재 시간 이후여야 합니다.");
+        }
+
+        if (displayEndDate.isBefore(displayStartDate)) {
+            throw new IllegalArgumentException("종료일은 시작일 이후여야 합니다.");
+        }
     }
 
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+    @Builder
+    public Shoe(String shoeName, LocalDateTime displayStartDate, LocalDateTime displayEndDate) {
+        this.shoeName = shoeName;
+        this.displayStartDate = displayStartDate;
+        this.displayEndDate = displayEndDate;
     }
-
-    public void markDeleted() {
-        this.deletedAt = LocalDateTime.now();
-    }
-
 
 }
