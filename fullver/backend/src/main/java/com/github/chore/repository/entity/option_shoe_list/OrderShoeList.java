@@ -48,11 +48,11 @@ public class OrderShoeList {
     @Column(name = "total_amount")
     private BigDecimal totalAmount;
 
-    @Builder.Default
+    
     @Column(name = "is_cancellable")
     private Boolean isCancellable = true;
 
-    @Builder.Default
+    
     @Column(name = "order_shoe_status",nullable = false)
     private OrderShoeStatus orderShoeStatus=OrderShoeStatus.ORDERED; // DB에도 설정되어 있지만 가독성 향상을 위해 디폴트값 명시
 

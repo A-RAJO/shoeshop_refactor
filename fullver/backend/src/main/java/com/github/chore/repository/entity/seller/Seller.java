@@ -45,19 +45,19 @@ public class Seller {
     @Column(name = "account_holder",nullable = false,length = 50)
     private String accountHoler;
 
-    @Builder.Default
+    
     @Enumerated(EnumType.STRING)
     @Column(name = "verification_status", nullable = false)
     private VerificationStatus verificationStatus = PENDING;
 
-    @Builder.Default
+    
     @Column(name="is_approved",nullable = false)
     private Boolean isApproved = Boolean.valueOf(false);
 
     @Column(name = "approved_at",nullable = false)
     private LocalDate approvedAt;
 
-    @Builder.Default
+    
     @Column(name = "total_orders")
     private Integer totalOrders = 0;
 

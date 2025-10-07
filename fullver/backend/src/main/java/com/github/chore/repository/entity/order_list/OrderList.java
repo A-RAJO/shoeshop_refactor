@@ -48,12 +48,12 @@ public class OrderList {
     @Column(name = "delivery_memo", length = 200)
     private String deliverMemo;
 
-    @Builder.Default
+    
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status")
     private OrderStatus orderStatus = OrderStatus.PENDING;
 
-    @Builder.Default
+    
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_status")
     private PaymentStatus paymentStatus = PaymentStatus.PENDING;

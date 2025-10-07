@@ -41,7 +41,7 @@ public class ShoeDetail {
     @Column(name= "short_description", nullable = false, length = 500)
     private String shortDescription;
 
-    @Builder.Default
+    
     @Enumerated(EnumType.STRING)
     @Column(name = "season")
     private Season season = ALL_SEASON;
@@ -49,11 +49,11 @@ public class ShoeDetail {
     @Column(name = "release_date")
     private LocalDate releaseDate;
 
-    @Builder.Default
+    
     @Column(name = "is_limited_edition")
     private Boolean isLimitedEdition = Boolean.valueOf(false);
 
-    @Builder.Default
+    
     @Column(name = "is_collaboration")
     private Boolean isCollaboration = Boolean.valueOf(false);
 
