@@ -34,7 +34,7 @@ public class ShoeOption {
     @Column(name = "option_etc", length = 50)
     private String optionEtc;
 
-    @Builder.Default
+    
     @Column(name="sort_order")
     private Integer sortOrder = 0;
 
@@ -44,7 +44,7 @@ public class ShoeOption {
     @Column(name = "sku", nullable = false)
     private String sku;
 
-    @Builder.Default
+    
     @Column(name = "is_active",nullable = false) // 활성화여부
     private Boolean isActive = Boolean.valueOf(true);
 

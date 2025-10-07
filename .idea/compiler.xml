@@ -10,13 +10,6 @@
         <module name="shoesShopRefactor.main" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="shoesshop_refactor" target="17" />
-      <module name="shoesshop_refactor.main" target="17" />
-      <module name="shoesshop_refactor.test" target="17" />
-      <module name="SuperCodingTeam1" target="17" />
-      <module name="SuperCodingTeam1.main" target="17" />
-      <module name="SuperCodingTeam1.test" target="17" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="21" />
   </component>
 </project>

@@ -1,46 +1,46 @@
-//package com.github.chore.web.dto;
+package com.github.chore.web.dto;
+
+import com.github.chore.repository.entity.role.Role;
+import com.github.chore.repository.entity.user.Gender;
+import com.github.chore.repository.entity.user.User;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.*;
+
+
+
+
+@Data
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class SignUpDTO {
+
+    @NotEmpty
+    private String userName;
+
+    @NotEmpty
+    @Email
+    private String email;
+
+    @NotEmpty
+    private String password;
+
+    @NotEmpty
+    private String phoneNum;
+
+    private Role[] roles;
+    private String userAddress;
+    private Gender gender;
+    private String userImg;
+
+}
+
+
+//      private String user_profile;
 //
-//import com.github.chore.repository.entity.user.Role;
-//import com.github.chore.repository.entity.user.User;
-//import com.github.chore.repository.entity.user.UserRole;
-//import com.github.chore.service.UserRoleService;
-//import jakarta.validation.constraints.Email;
-//import jakarta.validation.constraints.NotEmpty;
-//import jakarta.validation.constraints.Size;
-//import lombok.*;
-//
-//import java.util.ArrayList;
-//import java.util.Arrays;
-//import java.util.List;
-//import java.util.stream.Collectors;
-//
-//
-//@Data
-//@ToString
-//@NoArgsConstructor
-//@AllArgsConstructor
-//@Builder
-//public class SignUpDTO {
-//
-//  @NotEmpty(message = "유저 이름은 필수입니다.")
-//  @Size(min = 2, max = 20, message = "유저 이름은 2자에서 20자 사이여야 합니다.")
-//  private String user_name;
-//
-//  @NotEmpty(message = "이메일은 필수입니다.")
-//  @Email(message = "유효한 이메일 주소를 입력해 주세요.")
-//  private String user_email;
-//
-//  @NotEmpty(message = "패스워드는 필수입니다.")
-//  @Size(min = 4, max = 15, message = "패스워드는 4자에서 15자 사이여야 합니다.")
-//  private String user_password;
-//
-//  @NotEmpty(message = "전화번호는 필수입니다.")
-//  @Size(min = 10, max = 15, message = "전화번호는 10자에서 15자 사이여야 합니다.")
-//  private String user_phone;
-//
-//  private String user_profile;
-//
-//  private Role[] roles;
 //
 //
 //  /**
@@ -93,4 +93,3 @@
 //        .user_role(userRoles)
 //        .build();
 //  }
-//}
