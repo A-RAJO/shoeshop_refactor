@@ -62,7 +62,7 @@ public class Seller {
     private Integer totalOrders = 0;
 
     @Column(name = "total_revenue")
-    private BigDecimal totalRevenue = BigDecimal.valueOf(0);
+    private BigDecimal totalRevenue;
 
     @Column(name = "rating_avg")
     private BigDecimal ratingAvg;
@@ -72,15 +72,5 @@ public class Seller {
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
-    @PrePersist
-    protected void onCreate(){
-        LocalDateTime now = LocalDateTime.now();
-
-        if (verificationStatus == VERIFIED){
-            this.approvedAt= LocalDate.from(now); // 승인된 상태에서만 현재 시간 입력
-        } else {
-            this.approvedAt=LocalDate.of(0000,00,00); // 초기화
-        }
-    }
 
 }
