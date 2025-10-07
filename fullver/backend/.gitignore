@@ -5,6 +5,11 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+
+# IntelliJ GUI Designer
+*.form
+uidesigner.xml
+
 ### STS ###
 .apt_generated
 .classpath
@@ -19,6 +24,11 @@ bin/
 
 ### IntelliJ IDEA ###
 
+# 로그 파일 무시
+.log
+logs/test.log
+.yaml
+
 # IntelliJ IDEA 관련 개인/환경 설정 제외
 .idea/
 *.iws
@@ -26,8 +36,9 @@ bin/
 *.ipr
 
 # 빌드, 캐시 폴더 제외
-out/
-target/
+/out/
+/target/
+/*.iml
 
 # 예외: 소스 폴더 내 out 디렉토리는 제외하지 않음
 !**/src/main/**/out/

@@ -1,0 +1,52 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+
+    logging:
+      config: classpath:logback-spring-dev.xml
+
+#  datasource:
+#    url: jdbc:mariadb://database-1.cn6ioosku2ij.ap-northeast-2.rds.amazonaws.com/supercoding_team1
+#    username: ${RDS_USERNAME}
+#    password: ${RDS_PASSWORD}
+#    driver-class-name: org.mariadb.jdbc.Driver
+
+#
+#  servlet:
+#    multipart:
+#      max-file-size: 10MB
+#      max-request-size: 10MB
+
+
+#  jwt:
+#    token:
+#      access-expiration-time: 3600000  # 접근 토큰 시간: 1 시간 (60*60*1000 = 3600000 밀리초)
+#      refresh-expiration-time: 1209600000  # 갱신 토큰 시간: 14일 (60*60*24*14*1000 = 1209600000 밀리초)
+#
+#
+#cloud:
+#  aws:
+#    region:
+#      static: ap-northeast-2
+#    credentials:
+#      access-key: ${AWS_ACCESS_KEY}
+#      secret-key: ${AWS_SECRET_KEY}
+#    s3:
+#      bucket: supercoding2406

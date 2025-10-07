@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: shoesShopRefactor
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+    logging:
+      config: classpath:logback-spring-local.xml
+
+
+datasource:
+  mysql:
+    url: jdbc:mysql://localhost:3306/shoe_mall_refactor
+    username: ${USERNAME}
+    password: ${PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  redis:
+    host: localhost
+    port: 6379
+    password:
+
