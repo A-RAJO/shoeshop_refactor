@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface OptionShoeListRepository extends JpaRepository<OptionShoeList, Integer> {
+public interface OptionShoeListRepository extends JpaRepository<OrderShoeList, Integer> {
 
 }
