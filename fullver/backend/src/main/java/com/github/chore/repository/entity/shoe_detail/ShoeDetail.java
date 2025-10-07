@@ -20,10 +20,6 @@ public class ShoeDetail {
     @Column(name = "shoe_detail_id", nullable = false)
     private Integer shoeDetailId;
 
-    @OneToOne
-    @JoinColumn(name="shoe_id",nullable = false)
-    private Shoe shoe;
-
     @Column(name = "brand", nullable = false, length = 50)
     private String brand;
 
@@ -53,10 +49,12 @@ public class ShoeDetail {
     @Column(name = "release_date")
     private LocalDate releaseDate;
 
+    @Builder.Default
     @Column(name = "is_limited_edition")
-    private Boolean isLimitedEdition;
+    private Boolean isLimitedEdition = Boolean.valueOf(false);
 
+    @Builder.Default
     @Column(name = "is_collaboration")
-    private Boolean isCollaboration;
+    private Boolean isCollaboration = Boolean.valueOf(false);
 
 }
