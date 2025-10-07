@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Table(name = "shoe")
+@NoArgsConstructor
 @Entity
 public class Shoe {
     @Id
@@ -42,16 +42,13 @@ public class Shoe {
     @Column(name = "total_sales")
     private BigDecimal totalSales;
 
-    @Builder.Default
     @Column(name = "discount_price")
-    private BigDecimal discountPrice = BigDecimal.valueOf(0);
+    private BigDecimal discountPrice;
 
-    @Builder.Default
     @Column(name = "discount_rate")
-    private BigDecimal discountRate = BigDecimal.valueOf(0);
+    private BigDecimal discountRate;
 
     @Enumerated(EnumType.STRING)
-    @Builder.Default
     @Column(name = "discount_priority")
     private DiscountPriority discountPriorit = DiscountPriority.NONE;
 
@@ -67,7 +64,6 @@ public class Shoe {
     @Column(name = "rating_avg")
     private BigDecimal ratingAvg;
 
-    @Builder.Default
     @Column(name = "estimated_delivery_days")
     private Integer estimatedDeliveryDays = 3;
 
@@ -79,7 +75,6 @@ public class Shoe {
     @Column(name = "approval_status",nullable = false)
     private ApprovalStatus approvalStatus = ApprovalStatus.PENDING;
 
-    @Builder.Default
     @Column(name = "rejection_reason", length = 200)
     private String rejectionReason = "관리자에게 문의하시길 바랍니다.";
 
@@ -87,19 +82,15 @@ public class Shoe {
     @JoinColumn(name = "user_id") // 승인하는 관리자 아이디에 해당되는 것
     private User ApprovedBy;
 
-    @Builder.Default
     @Column(name = "approved_at") // 승인날짜
     private LocalDateTime approvedAt;
 
-    @Builder.Default
     @Column(name = "is_active",nullable = false) // 활성화여부
     private Boolean isActive = true;
 
-    @Builder.Default
     @Column(name = "is_featured") // 추천상품,일반상품
     private Boolean isFeatured = false;
 
-    @Builder.Default
     @Column(name = "is_new_arrival")
     private Boolean isNewArrival=false;
 
