@@ -8,9 +8,6 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Table(name = "user")
 @Entity
 public class User {
@@ -39,8 +36,8 @@ public class User {
     private String userAddress;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "gender", nullable = false)
-    private Gender gender;
+    @Column(name = "gender")
+    private Gender gender = Gender.NONE;
 
     @Column(name="user_img",nullable = false, length = 500)
     private String userImg;
@@ -48,7 +45,7 @@ public class User {
     @Column(name="is_active",nullable = false)
     private boolean isActive;
 
-    @Column(name = "created_at", nullable = false, updatable = false) // 자동 입력 기능 필요 : @LastModifiedDate와 Auditing 설정
+    @Column(name = "created_at", nullable = false, updatable = false) // DB 수준에서 자동입력됨. 데이터 정합성 중요.
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
