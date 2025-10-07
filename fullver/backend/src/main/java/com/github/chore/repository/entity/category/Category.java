@@ -7,9 +7,6 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Table(name = "category")
 @Entity
 public class Category {
@@ -21,9 +18,9 @@ public class Category {
     @Column(name = "category_name",nullable = false, length = 100)
     private String categoryName;
 
-    @OneToOne
-    @JoinColumn(name="category",nullable = false)
-    private Category parentCategory;
+    @ManyToOne
+    @JoinColumn(name = "parent_category_id", insertable=false, updatable=false)
+    private Category parentcategory;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "targer_gender", nullable = false)
@@ -42,15 +39,5 @@ public class Category {
 
     @Column(name = "category_path",length = 500)
     private String categoryPath;
-
-    @OneToOne
-    @JoinColumn(name = "category", insertable=false, updatable=false)
-    private Category category;
-
-    @Column(name = "created_at", nullable = false, updatable = false) // 자동 입력 기능 필요 : @LastModifiedDate와 Auditing 설정
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
 }
