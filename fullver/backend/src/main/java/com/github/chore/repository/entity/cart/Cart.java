@@ -9,19 +9,16 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Table(name = "cart")
 @Entity
 public class Cart { // 상품옵션 선택 내역을 임시저장
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_id", nullable = false) //auto-incresment로 설정되어 있어 길이제약 없음
+    @Column(name = "cart_id", nullable = false)
     private Integer cartId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id",nullable = false)
+    @JoinColumn(name = "user_id",nullable = false) // 상품 옵션과 유저 사이 중간 테이블 역할
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,7 +28,7 @@ public class Cart { // 상품옵션 선택 내역을 임시저장
     @Column(name="quantity",nullable = false)
     private Integer quantity;
 
-    @Column(name = "created_at", nullable = false, updatable = false) // 자동 입력 기능 필요 : @LastModifiedDate와 Auditing 설정
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at",nullable = false)
