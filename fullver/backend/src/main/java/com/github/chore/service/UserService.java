@@ -1,77 +1,44 @@
-//package com.github.chore.service;
-//
-//import com.github.chore.config.auth.jwt.JwtTokenProviderService;
-//import com.github.chore.repository.entity.user.RefreshTokenRepository;
-//import com.github.chore.repository.entity.user.User;
-//import com.github.chore.repository.entity.user.UserRepository;
-//import com.github.chore.web.dto.LoginDTO;
-//import com.github.chore.web.dto.UserDTO;
-//import com.github.chore.web.dto.WithdrawDTO;
-//import lombok.RequiredArgsConstructor;
-//import lombok.extern.log4j.Log4j2;
-//import org.springframework.stereotype.Service;
-//import org.springframework.transaction.annotation.Transactional;
-//
-//
-//@Log4j2
-//@Service
-//@Transactional
-//@RequiredArgsConstructor
-//public class UserService {
-//
-//  private final UserRepository userRepository;
+package com.github.chore.service;
+
+import com.github.chore.exception.DuplicateException;
+
+import com.github.chore.repository.entity.user.User;
+import com.github.chore.repository.entity.user.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+
+@Log4j2
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class UserService {
+
+  private final UserRepository userRepository;
 //  private final RefreshTokenRepository refreshTokenRepository;
-//
 //  private final JwtTokenProviderService jwtTokenProviderService;
-//
-//
-//
-//  /**
-//   * 회원가입 처리
-//   * @param user 회원가입 정보가 담긴 User 객체
-//   * @return 저장된 User 객체
-//   * @throws Exception 유효성 검사 실패 또는 중복된 사용자 존재 시 예외 발생
-//   */
-//  public User registerUser(User user) throws Exception {
-//    // 1. User 정보 유효성 체크
-//    if (user == null || user.getUserName() == null || user.getUserName().isEmpty()) {
-//      throw new RuntimeException("유효하지 않은 userName입니다.");
-//    }
-//
-//    // 2. 중복된 userName 체크
-//    if (userRepository.existsByUserName(user.getUserName())) {
-//      throw new RuntimeException("userName 이 이미 존재합니다.");
-//    }
-//
-//    if (userRepository.existsByEmail(user.getEmail())) {
-//      throw new RuntimeException("이메일이 이미 존재합니다.");
-//    }
-//
-//    // 3. 유효성 통과 후 사용자 저장
-//    return userRepository.save(user);
-//  }
-//
-//
-//  /**
-//   * 중복된 userName 체크
-//   * @param userName
-//   * @return
-//   */
-//  public boolean isDuplicateUserName(String userName) {
-//    return userRepository.existsByUserName(userName);
-//  }
-//
-//
-//  /**
-//   * 중복된 이메일 체크
-//   * @param userEmail
-//   * @return
-//   */
-//  public boolean isDuplicateEmail(String userEmail) {
-//    return userRepository.existsByEmail(userEmail);
-//  }
-//
-//
+
+
+  //형식상 에러는 컨트롤러단에서 하고, 서비스단에서는 비즈니스로직만 검증하기
+  public User registerUser(User user) throws DuplicateException {
+    validateDuplicateUser(user); // 중복 검사
+    userRepository.save(user); // 정상 등록
+
+    return user;
+  }
+
+  public void validateDuplicateUser(User user) {
+    if (userRepository.existsByUserName(user.getUserName())) {
+      throw new DuplicateException("이미 존재하는 사용자 이름입니다.");
+    }
+    else if (userRepository.existsByEmail(user.getEmail())){
+      throw new DuplicateException("이미 존재하는 이메일입니다.");
+    }
+  }
+
+
 //  public User getByCredentials(String userName, String password) {
 //    return userRepository.findByUserNameAndPassword(userName,password);
 //  }
@@ -122,7 +89,7 @@
 //      throw new IllegalStateException("유저 정보가 없습니다.");
 //    }
 //  }
-//
-//
-//
-//}
+
+
+
+}
