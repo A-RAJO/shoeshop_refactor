@@ -8,8 +8,11 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
 @Table(name = "user")
 @Entity
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,7 +46,7 @@ public class User {
     private String userImg;
 
     @Column(name="is_active",nullable = false)
-    private boolean isActive;
+    private boolean isActive = true;
 
     @Column(name = "created_at", nullable = false, updatable = false) // DB 수준에서 자동입력됨. 데이터 정합성 중요.
     private LocalDateTime createdAt;
