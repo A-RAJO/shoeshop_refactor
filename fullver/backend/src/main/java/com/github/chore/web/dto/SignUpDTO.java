@@ -18,78 +18,40 @@ import lombok.*;
 @Builder
 public class SignUpDTO {
 
-    @NotEmpty
+    public interface Create {}
+    public interface Update {}
+
+    @NotEmpty(groups = {Create.class, Update.class})
     private String userName;
 
-    @NotEmpty
+    @NotEmpty(groups = {Create.class, Update.class})
     @Email
     private String email;
 
-    @NotEmpty
+    @NotEmpty(groups = {Create.class, Update.class})
     private String password;
 
-    @NotEmpty
+    @NotEmpty(groups = {Create.class, Update.class})
     private String phoneNum;
 
-    private Role[] roles;
+    private Role role; // 일대일관계
     private String userAddress;
     private Gender gender;
     private String userImg;
 
+
+    public static User from(SignUpDTO dto) {
+        return User
+                .builder()
+                .role(dto.getRole()) // enum 타입 그대로 받아옴. 프론트와 role 타입 공유.
+                .userName(dto.getUserName())
+                .email(dto.getEmail())
+                .password(dto.getPassword())
+                .phoneNum(dto.getPhoneNum())
+                .userAddress(dto.getUserAddress())
+                .gender(dto.getGender())
+                .userImg(dto.getUserImg())
+                .build();
+    }
+
 }
-
-
-//      private String user_profile;
-//
-//
-//
-//  /**
-//   * SignUpDTO를 User 엔티티로 변환하는 메서드
-//   * @param signUpDTO 회원가입 DTO
-//   * @return User 엔티티
-//   */
-//  public static User toCreateUser(SignUpDTO signUpDTO, UserRoleService userRoleService) {
-//
-//    List<UserRole> userRoles=null;
-//    if(signUpDTO.getRoles()==null || signUpDTO.getRoles().length == 0) {
-//          userRoles = new ArrayList<>();
-//          UserRole userRole1 = userRoleService.findByRoleName(Role.BUYER);
-//          if (userRole1 == null) {
-//            userRole1 = new UserRole();
-//            userRole1.setRoleName(Role.SELLER);
-//            userRole1 = userRoleService.save(userRole1);
-//          }
-//           userRoles.add(userRole1);
-////          UserRole userRole2 = userRoleService.findByRoleName(Role.SELLER);
-////          if (userRole2 == null) {
-////            userRole2 = new UserRole();
-////            userRole2.setRoleName(Role.SELLER);
-////            userRole2 = userRoleService.save(userRole2);
-////          }
-////          userRoles.add(userRole2);
-//
-//    }else{
-//      userRoles = Arrays.stream(signUpDTO.getRoles())
-//              .map(roleName -> {
-//                UserRole userRole = userRoleService.findByRoleName(roleName); // 기존 Role을 조회
-//                if (userRole == null) {
-//                  userRole = new UserRole();
-//                  userRole.setRoleName(roleName);
-//                  userRole = userRoleService.save(userRole);
-//                }
-//                return userRole;
-//              })
-//              .collect(Collectors.toList());
-//    }
-//
-//
-//    return User.builder()
-//        .userName(signUpDTO.getUser_name())
-//        .email(signUpDTO.getUser_email())
-//        .password(signUpDTO.getUser_password())
-//        .phoneNum(signUpDTO.getUser_phone())
-//        .userAddress(signUpDTO.getUser_profile())
-//        .userGender("")
-//        .user_role(userRoles)
-//        .build();
-//  }
