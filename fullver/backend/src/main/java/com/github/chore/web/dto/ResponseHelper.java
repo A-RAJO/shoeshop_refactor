@@ -9,20 +9,27 @@ public class ResponseHelper { // ResponseEntity + ResponseDTO 조합 정리
     // ResponseEntity.메서드명(HTTP 상태 코드, 헤더, 바디 포함 가능)
     // ResponseEntity.status(HttpStatus status).header("X-Custom-Header", "value").body(responseDTO).build();
 
-    public <T> ResponseEntity<ResponseDTO<T>> ok(T data) {
-        return ResponseEntity.ok(ResponseDTO.success(data));
+    public ResponseEntity<ResponseDTO<?>> ok(String message) {
+        return ResponseEntity.ok(ResponseDTO.success(message));
     }
 
-    public <T> ResponseEntity<ResponseDTO<T>> ok(T data, String message) {
-        return ResponseEntity.ok(ResponseDTO.success(data, message));
+    public ResponseEntity<ResponseDTO<?>> ok(String message, Object data) {
+        return ResponseEntity.ok(ResponseDTO.success(message,data));
     }
 
-    public <T> ResponseEntity<ResponseDTO<T>> fail(int status, String message, T data) {
+    public ResponseEntity<ResponseDTO<?>> fail(int status, String message) {
+        return ResponseEntity.status(status).body(ResponseDTO.fail(status, message));
+    }
+    public ResponseEntity<ResponseDTO<?>> fail(int status, String message, Exception e) {
+        return ResponseEntity.status(status).body(ResponseDTO.fail(status, message));
+    }
+
+    public ResponseEntity<ResponseDTO<?>> fail(int status, String message, Object data) {
         return ResponseEntity.status(status).body(ResponseDTO.fail(status, message, data));
     }
 
-    public <T> ResponseEntity<ResponseDTO<T>> fail(String message, T data) {
-        return ResponseEntity.status(400).body(ResponseDTO.fail(400, message, data));
-    }
+
+
+
 }
 
