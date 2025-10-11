@@ -1,6 +1,7 @@
 package com.github.chore.web.dto;
 
 import com.github.chore.repository.entity.role.Role;
+import com.github.chore.repository.entity.role.RoleType;
 import com.github.chore.repository.entity.user.Gender;
 import com.github.chore.repository.entity.user.User;
 
@@ -34,7 +35,6 @@ public class SignUpDTO {
     @NotEmpty(groups = {Create.class, Update.class})
     private String phoneNum;
 
-    private Role role; // 일대일관계
     private String userAddress;
     private Gender gender;
     private String userImg;
@@ -43,7 +43,6 @@ public class SignUpDTO {
     public static User from(SignUpDTO dto) {
         return User
                 .builder()
-                .role(dto.getRole()) // enum 타입 그대로 받아옴. 프론트와 role 타입 공유.
                 .userName(dto.getUserName())
                 .email(dto.getEmail())
                 .password(dto.getPassword())
