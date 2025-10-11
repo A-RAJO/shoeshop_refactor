@@ -1,10 +1,12 @@
 package com.github.chore.web.controller;
 
-import com.github.chore.exception.DuplicateException;
+import com.github.chore.repository.entity.role.Role;
+import com.github.chore.repository.entity.role.RoleType;
 import com.github.chore.repository.entity.user.User;
 import com.github.chore.service.UserService;
+import com.github.chore.web.dto.LoginDTO;
 import com.github.chore.web.dto.ResponseDTO;
-import com.github.chore.web.dto.ResponseHelper;
+import com.github.chore.web.dto.ResponseUtils;
 import com.github.chore.web.dto.SignUpDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +22,6 @@ import java.util.Objects;
 @RequestMapping(value = "/auth")
 @Slf4j
 public class AuthController {
-    private final ResponseHelper responseHelper;
     private final UserService userService;
 
     @PostMapping("/sign-up")
@@ -30,11 +31,10 @@ public class AuthController {
 
         log.info("회원 가입 처리 요청 수신");
 
-
         // DTO 유효성 검사
         if (bindingResult.hasErrors()) {
             String errorMessage = Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage();
-            return responseHelper.fail(400, errorMessage);
+            return ResponseUtils.fail(errorMessage);
         }
 
         // DTO -> Entity
@@ -45,9 +45,9 @@ public class AuthController {
         User CreatedUser = userService.registerUser(user);
 
         // 성공 응답
-        return responseHelper.ok("회원가입에 성공하였습니다." , CreatedUser);
+        return ResponseUtils.ok("회원가입에 성공하였습니다." , CreatedUser);
     }
-
+//
 //
 //
 //    /** auth/login
@@ -57,16 +57,12 @@ public class AuthController {
 //     * @return
 //     */
 //    @PostMapping("/login")
-//    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO, BindingResult bindingResult){
+//    public ResponseEntity<ResponseDTO<?>> login(@Validated @RequestBody LoginDTO loginDTO, BindingResult bindingResult){
 //
 //        // 1. 유효성 체크 메서드 호출
 //        if (bindingResult.hasErrors()) {
 //            String errorMessage = Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage();
-//            LoginResponseDTO<Object> loginResponseDTO =  LoginResponseDTO.builder()
-//                    .status(400)
-//                    .message(errorMessage)
-//                    .build();
-//            return ResponseEntity.badRequest().body(loginResponseDTO);
+//            return ResponseUtils.fail(400,"유효하지 않은 입력값입니다.", errorMessage);
 //        }
 //
 //
