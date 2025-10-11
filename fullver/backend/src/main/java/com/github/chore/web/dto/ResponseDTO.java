@@ -22,8 +22,6 @@ public class ResponseDTO<T>  {
         return new ResponseDTO<>(200,message,data);
     }
 
-
-
     // 실패 응답
 
     public static <T> ResponseDTO<T> fail(int status, String message) {
