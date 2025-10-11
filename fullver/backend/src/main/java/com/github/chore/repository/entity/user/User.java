@@ -10,18 +10,14 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "user")
 @Entity
-@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
     private Integer userId;
-
-    @OneToOne
-    @JoinColumn(name="role_id",nullable = false)
-    private Role role;
 
     @Column(name = "user_name", nullable = false, length = 20)
     private String userName;
@@ -48,9 +44,9 @@ public class User {
     @Column(name="is_active",nullable = false)
     private boolean isActive = true;
 
-    @Column(name = "created_at", nullable = false, updatable = false) // DB 수준에서 자동입력됨. 데이터 정합성 중요.
+    @Column(name = "created_at", insertable = false, updatable = false) //insertable = false 설정하지 않으면 DB에서 자동입력 안됨
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at",  insertable = false)
     private LocalDateTime updatedAt;
 }
