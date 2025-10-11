@@ -18,8 +18,10 @@
     </appender>
 
     <!-- 루트 로거 설정 -->
-    <root level="info">
+    <root level="debug">
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
     </root>
+
+    <logger name="com.github.chore" level="debug"/>
 </configuration>
