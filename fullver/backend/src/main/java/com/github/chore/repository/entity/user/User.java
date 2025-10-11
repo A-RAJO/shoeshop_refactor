@@ -44,8 +44,8 @@ public class User {
     @Column(name="is_active",nullable = false)
     private boolean isActive = true;
 
-    @Column(name = "created_at", insertable = false, updatable = false) //insertable = false 설정하지 않으면 DB에서 자동입력 안됨
-    private LocalDateTime createdAt;
+    @Column(name = "created_at", insertable = false, updatable = false)
+    private LocalDateTime createdAt; //insertable = false 설정하지 않으면 DB에서 자동입력 안됨
 
     @Column(name = "updated_at",  insertable = false)
     private LocalDateTime updatedAt;
