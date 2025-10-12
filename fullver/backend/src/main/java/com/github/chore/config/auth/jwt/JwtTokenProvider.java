@@ -6,6 +6,7 @@ import com.github.chore.exception.JwtNotFoundEmailException;
 import com.github.chore.exception.JwtNotValidException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -27,11 +29,14 @@ public class JwtTokenProvider {
 
     private final UserDetailsService userDetailsService;
     private final JwtProperties jwtProperties;
+    private SecretKey key;
 
+    @PostConstruct
+    public void init() {
+        this.key = Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8));
+        log.info("[JwtTokenProvider] SecretKey 초기화 완료");
+    }
 
-    private final String secretKey= Base64.getEncoder()
-            .encodeToString("{secretKey}".getBytes());
-    SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes());
 
 //    private final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24; // 24시간
 //    private final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 14; // 14일
@@ -65,7 +70,7 @@ public class JwtTokenProvider {
         log.info("[getEmailFromToken] 토큰에서 이메일(식별자) 추출 시작");
         try {
             String email = Jwts.parser()
-                    .setSigningKey(secretKey)
+                    .setSigningKey(key)
                     .parseClaimsJws(token)
                     .getBody()
                     .getSubject();  // subject에 email을 넣어뒀다고 가정
