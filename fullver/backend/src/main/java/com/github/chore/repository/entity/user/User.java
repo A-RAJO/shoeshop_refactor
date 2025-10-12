@@ -1,10 +1,11 @@
 package com.github.chore.repository.entity.user;
 
-import com.github.chore.repository.entity.role.Role;
+import com.github.chore.repository.entity.user_role.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -49,4 +50,8 @@ public class User {
 
     @Column(name = "updated_at",  insertable = false)
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<UserRole> userRoles;
+
 }
