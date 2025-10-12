@@ -24,9 +24,36 @@ public class GlobalExceptionHandler {
                 .body(ResponseDTO.fail(409, ex.getMessage()));
     }
 
+
+    @ExceptionHandler(JwtNotValidException.class)
+    public ResponseEntity<ResponseDTO<?>> JwtNotVaildException(JwtNotValidException jnve) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ResponseDTO.fail(401, jnve.getMessage()));
+    }
+
+    @ExceptionHandler(JwtExpiredException.class)
+    public ResponseEntity<ResponseDTO<?>> JwtExpiredException(JwtExpiredException jee) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ResponseDTO.fail(401, jee.getMessage()));
+    }
+    @ExceptionHandler(JwtNotFoundEmailException.class)
+    public ResponseEntity<ResponseDTO<?>> JwtNotFoundEmailException(JwtNotFoundEmailException jnfe){
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ResponseDTO.fail(404,jnfe.getMessage()));
+    }
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ResponseDTO<?>> UserNotFoundException(UserNotFoundException unf){
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ResponseDTO.fail(404,unf.getMessage()));
+    }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseDTO<?>> handleAll(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ResponseDTO.fail(500, "서버 오류", ex.getMessage()));
     }
+
 }
