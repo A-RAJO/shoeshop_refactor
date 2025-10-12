@@ -49,6 +49,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'mysql:mysql-connector-java:8.0.33' // ✅ MySQL 드라이버 안정적으로 존재하는 버전
 
+    //jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 }
 
 tasks.named('test') {
